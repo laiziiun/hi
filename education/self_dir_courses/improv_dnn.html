@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improving Deep NN</title>
+</head>
+<body>
+    <h2>Notes for course</h2>
+    <li>
+        <em>Weight initialization partially solves vanishing/exploding gradient</em>
+        <p>Set variance of weights W as 2/n. 
+            Relu: W[l] = np.random.randn(shape) * np.sqrt(2/n[l-1]).
+            Tanh: replace sqrt with np.sqrt(1/n[l-1]) - Xavier initialization
+            Sets the magnitude of W to be around 1, so it doesn't explode too quickly. 
+        </p>
+    </li>
+    <hr>
+
+    <li>
+        <em>Gradient checking for backprop</em>
+        <p>
+            W[1], b[1], ... W[L], b[L]. reshape them into big vector theta
+            dW[1], db[1], ... dW[L], db[L]. reshape them into big vector d_theta
+            Check: d_theta_approx_i = [J(theta_1, theta_2, ... , theta_i + eps, ...) - J(theta_1, ... , theta_i - eps, ...) ]/ 2 eps
+            is it approx equal to d_theta_i
+            ie, check || d_theta_approx_i - d_theta_i || / (||d_theta_approx_i|| + ||d_theta_i||)
+            > see: <a href="http://ufldl.stanford.edu/tutorial/supervised/DebuggingGradientChecking/">UFHDL notes on gradient checking</a>
+            
+        </p>
+    </li>
+    <hr>
+
+    <li>
+        <em>Prog assignment 1: Initializations</em>
+        <p>
+            <ul>
+                > intializing weights to be all zeros fails to break symmetry. every neuron in each layer learns the same thing. basically a linear classifier (like logreg)
+            </ul> 
+
+            <ul>
+                > initializing large normally random values (scale of 10s) leads to vanishing/exploding gradient
+            </ul>
+            <ul>
+                > He initialization: this is similar except Xavier initialization uses a scaling factor for the weights  𝑊[𝑙]
+                of sqrt(1./layers_dims[l-1]) where He initialization would use sqrt(2./layers_dims[l-1])
+            </ul>
+            <ul>
+                > He initialization for relu, xavier for tanh
+            </ul>
+        </p>
+<hr>
+        <em>Prog assignment 2: Regularization</em>
+        <p>
+            <ul>
+                > Change cost function to include regularization term: 
+                L2_regularization_cost = 1/m * lambd / 2 * (np.sum(np.square(W1)) + np.sum(np.square(W2)) + np.sum(np.square(W3)))
+                > total cost: cross entropy cost + regularization cost
+            </ul> 
+            <ul>
+                > in backprop, the formula for finding gradient changes to : dW3 = 1./m * np.dot(dZ3, A2.T) + lambd / m * W3
+            </ul>
+            <ul>
+                Inverted dropout: 
+                Set  𝐴[1]
+  to  𝐴[1]∗𝐷[1]
+ . (You are shutting down some neurons). You can think of  𝐷[1]
+  as a mask, so that when it is multiplied with another matrix, it shuts down some of the values.
+Divide  𝐴[1]
+  by keep_prob. By doing this you are assuring that the result of the cost will still have the same expected value as without drop-out. (This technique is also called inverted dropout.)
+            </ul>
+            <ul>
+                You had previously shut down some neurons during forward propagation, by applying a mask  𝐷[1]
+  to A1. In backpropagation, you will have to shut down the same neurons, by reapplying the same mask  𝐷[1]
+  to dA1.
+During forward propagation, you had divided A1 by keep_prob. In backpropagation, you'll therefore have to divide dA1 by keep_prob again (the calculus interpretation is that if  𝐴[1]
+  is scaled by keep_prob, then its derivative  𝑑𝐴[1]
+  is also scaled by the same keep_prob).
+            </ul>
+        </p>
+
+    </li>
+    <hr>
+
+</body>
+</html>
