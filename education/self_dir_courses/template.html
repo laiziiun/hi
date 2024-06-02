@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improving Deep NN</title>
+</head>
+
+<body>
+    <header>
+        <a href="../self_dir.html">Back</a>
+    </header>
+    <div id="contents">
+        <h2>Notes for course</h2>
+        <li>
+            <em>Weight initialization partially solves vanishing/exploding gradient</em>
+            <p>Set variance of weights W as 2/n.
+                Relu: W[l] = np.random.randn(shape) * np.sqrt(2/n[l-1]).
+                Tanh: replace sqrt with np.sqrt(1/n[l-1]) - Xavier initialization
+                Sets the magnitude of W to be around 1, so it doesn't explode too quickly.
+            </p>
+        </li>
+        <hr>
+
+    </div>
+    <!-- use shift alt F to format document, or control shift p and search 'format document' -->
+
+</body>
+
+</html>

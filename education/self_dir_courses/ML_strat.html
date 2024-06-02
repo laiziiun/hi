@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improving Deep NN</title>
+</head>
+
+<body>
+    <header>
+        <a href="../self_dir.html">Back</a>
+    </header>
+    <div id="contents">
+        <h2>Notes for course</h2>
+        <li>
+            <em>Orthogonalization & Evaluation metric, performance </em>
+            <p>
+                <ul>
+                    Not performing well on training set: bigger network, tune hyperparams
+                </ul>
+                <ul>
+                    not well on test set: regularization, more training data
+                </ul>
+                <ul>
+                    Use single number evaluation metric if possible. else, determine which is optimizing and which are satisficing metrics
+                </ul>
+                <ul>
+                    human level error as bayes error. depending on bayes error, focus on avoidable bias (if training error is off) or variance
+                </ul>
+                <ul>
+                    Reduce avoidable bias: train bigger model, longer, better optimization algos, NN architecture, hyperparam
+                </ul>
+                <ul>
+                    Reduce variance: more data, better regularization, dropout, data augment, NN architecture, hyperparam
+                </ul>
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Error analysis & Mismatched train-dev/test sets </em>
+            <p>
+                <ul>
+                    Really look at mistakes that the model is making
+                </ul>
+                <ul>
+                    Build first system quickly, then iterate
+                </ul>
+                <ul>
+                    Can use training, training-dev (same dist as training, but no backprop), dev and test. performance on training-dev tells if its variance problem, or distribution problem
+                </ul>
+                <ul>
+                    transfer learning. useful when A, B have same input X, alot more data for A than B, low level features in A could be useful for B
+                </ul>
+                <ul>
+                    multi task learning: usual logistic loss fn for each output node. works when bunch of task shares low level features. when amt of data is small. can train big enough NN
+                </ul>
+                <ul>
+                    end to end deep learning
+                </ul>
+            </p>
+        </li>
+        <hr>
+    </div>
+
+</body>
+
+</html>

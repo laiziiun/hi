@@ -1,92 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Improving Deep NN</title>
 </head>
+
 <body>
     <header>
-        <a href="../index.html">Back</a>
+        <a href="../self_dir.html">Back</a>
     </header>
     <div id="contents">
         <h2>Notes for course</h2>
-    <li>
-        <em>Weight initialization partially solves vanishing/exploding gradient</em>
-        <p>Set variance of weights W as 2/n. 
-            Relu: W[l] = np.random.randn(shape) * np.sqrt(2/n[l-1]).
-            Tanh: replace sqrt with np.sqrt(1/n[l-1]) - Xavier initialization
-            Sets the magnitude of W to be around 1, so it doesn't explode too quickly. 
-        </p>
-    </li>
-    <hr>
+        <li>
+            <em>Weight initialization partially solves vanishing/exploding gradient</em>
+            <p>Set variance of weights W as 2/n.
+                Relu: W[l] = np.random.randn(shape) * np.sqrt(2/n[l-1]).
+                Tanh: replace sqrt with np.sqrt(1/n[l-1]) - Xavier initialization
+                Sets the magnitude of W to be around 1, so it doesn't explode too quickly.
+            </p>
+        </li>
+        <hr>
 
-    <li>
-        <em>Gradient checking for backprop</em>
-        <p>
-            W[1], b[1], ... W[L], b[L]. reshape them into big vector theta
-            dW[1], db[1], ... dW[L], db[L]. reshape them into big vector d_theta
-            Check: d_theta_approx_i = [J(theta_1, theta_2, ... , theta_i + eps, ...) - J(theta_1, ... , theta_i - eps, ...) ]/ 2 eps
-            is it approx equal to d_theta_i
-            ie, check || d_theta_approx_i - d_theta_i || / (||d_theta_approx_i|| + ||d_theta_i||)
-            > see: <a href="http://ufldl.stanford.edu/tutorial/supervised/DebuggingGradientChecking/">UFHDL notes on gradient checking</a>
-            
-        </p>
-    </li>
-    <hr>
+        <li>
+            <em>Gradient checking for backprop</em>
+            <p>
+                W[1], b[1], ... W[L], b[L]. reshape them into big vector theta
+                dW[1], db[1], ... dW[L], db[L]. reshape them into big vector d_theta
+                Check: d_theta_approx_i = [J(theta_1, theta_2, ... , theta_i + eps, ...) - J(theta_1, ... , theta_i -
+                eps, ...) ]/ 2 eps
+                is it approx equal to d_theta_i
+                ie, check || d_theta_approx_i - d_theta_i || / (||d_theta_approx_i|| + ||d_theta_i||)
+                > see: <a href="http://ufldl.stanford.edu/tutorial/supervised/DebuggingGradientChecking/">UFHDL notes on
+                    gradient checking</a>
 
-    <li>
-        <em>Prog assignment 1: Initializations</em>
-        <p>
+            </p>
+        </li>
+        <hr>
+
+        <li>
+            <em>Prog assignment 1: Initializations</em>
+            <p>
             <ul>
-                > intializing weights to be all zeros fails to break symmetry. every neuron in each layer learns the same thing. basically a linear classifier (like logreg)
-            </ul> 
+                > intializing weights to be all zeros fails to break symmetry. every neuron in each layer learns the
+                same thing. basically a linear classifier (like logreg)
+            </ul>
 
             <ul>
                 > initializing large normally random values (scale of 10s) leads to vanishing/exploding gradient
             </ul>
             <ul>
-                > He initialization: this is similar except Xavier initialization uses a scaling factor for the weights  𝑊[𝑙]
+                > He initialization: this is similar except Xavier initialization uses a scaling factor for the weights
+                𝑊[𝑙]
                 of sqrt(1./layers_dims[l-1]) where He initialization would use sqrt(2./layers_dims[l-1])
             </ul>
             <ul>
                 > He initialization for relu, xavier for tanh
             </ul>
-        </p>
-<hr>
-        <em>Prog assignment 2: Regularization</em>
-        <p>
+            </p>
+            <hr>
+            <em>Prog assignment 2: Regularization</em>
+            <p>
             <ul>
-                > Change cost function to include regularization term: 
-                L2_regularization_cost = 1/m * lambd / 2 * (np.sum(np.square(W1)) + np.sum(np.square(W2)) + np.sum(np.square(W3)))
+                > Change cost function to include regularization term:
+                L2_regularization_cost = 1/m * lambd / 2 * (np.sum(np.square(W1)) + np.sum(np.square(W2)) +
+                np.sum(np.square(W3)))
                 > total cost: cross entropy cost + regularization cost
-            </ul> 
-            <ul>
-                > in backprop, the formula for finding gradient changes to : dW3 = 1./m * np.dot(dZ3, A2.T) + lambd / m * W3
             </ul>
             <ul>
-                Inverted dropout: 
-                Set  𝐴[1]
-  to  𝐴[1]∗𝐷[1]
- . (You are shutting down some neurons). You can think of  𝐷[1]
-  as a mask, so that when it is multiplied with another matrix, it shuts down some of the values.
-Divide  𝐴[1]
-  by keep_prob. By doing this you are assuring that the result of the cost will still have the same expected value as without drop-out. (This technique is also called inverted dropout.)
+                > in backprop, the formula for finding gradient changes to : dW3 = 1./m * np.dot(dZ3, A2.T) + lambd / m
+                * W3
             </ul>
             <ul>
-                You had previously shut down some neurons during forward propagation, by applying a mask  𝐷[1]
-  to A1. In backpropagation, you will have to shut down the same neurons, by reapplying the same mask  𝐷[1]
-  to dA1.
-During forward propagation, you had divided A1 by keep_prob. In backpropagation, you'll therefore have to divide dA1 by keep_prob again (the calculus interpretation is that if  𝐴[1]
-  is scaled by keep_prob, then its derivative  𝑑𝐴[1]
-  is also scaled by the same keep_prob).
+                Inverted dropout:
+                Set 𝐴[1]
+                to 𝐴[1]∗𝐷[1]
+                . (You are shutting down some neurons). You can think of 𝐷[1]
+                as a mask, so that when it is multiplied with another matrix, it shuts down some of the values.
+                Divide 𝐴[1]
+                by keep_prob. By doing this you are assuring that the result of the cost will still have the same
+                expected value as without drop-out. (This technique is also called inverted dropout.)
             </ul>
-        </p>
+            <ul>
+                You had previously shut down some neurons during forward propagation, by applying a mask 𝐷[1]
+                to A1. In backpropagation, you will have to shut down the same neurons, by reapplying the same mask
+                𝐷[1]
+                to dA1.
+                During forward propagation, you had divided A1 by keep_prob. In backpropagation, you'll therefore have
+                to divide dA1 by keep_prob again (the calculus interpretation is that if 𝐴[1]
+                is scaled by keep_prob, then its derivative 𝑑𝐴[1]
+                is also scaled by the same keep_prob).
+            </ul>
+            </p>
+            <hr>
+            <em>Prog assignment 3: Gradient checking</em>
+            <p>
+            <ul>
+                > use epsilon to check if derivative equation is correct
+            </ul>
 
-    </li>
-    <hr>
+
+            </p>
+            <hr>
+            <em>mini batch gradient descent & momentum</em>
+            <p>
+            <ul>
+                > instead of processing entire training set before taking one step, split training set into mini batches
+                (baby training set)
+            </ul>
+            <ul>
+                X{1} ,... ,X{num_mini_batches}, Y{1}, ... , Y{num mini batches}
+            </ul>
+            <ul>
+
+                X(1) ,... ,X(i), ..., X(num training examples)
+            </ul>
+            <ul>
+                Z[1], ..., Z[num layers]
+            </ul>
+            <ul>
+                > full batch gradient descent for small datasets is ok. stochastic gradient descent loses benefits from
+                vectorization, since step taken after each example.
+                mini batch size usually between one and m. make progress without needing to wait for entire training
+                set. typical mini batch sizes: 64 to 512. Make sure mini batch
+                size fits in cpu/gpu memory
+            </ul>
+            <ul>
+                > alternative to gradient descent: exponentially weighted moving averages: V_t = beta * V_(t-1) +
+                (1-beta)*theta_t. Approx average over 1/(1-beta) points
+            </ul>
+            <ul>
+                > efficient way to compute moving average of the last X days without keeping all historical data
+            </ul>
+            <ul>
+                > remember to enact bias correction if concerned with initial phase. replace v_t with v_t / (1-beta^t)
+            </ul>
+            <ul>
+                > gradient descent with momentum: for iteration t, find dW, db on current mini batch (or batch)
+                > compute V_dw = beta*V_dw + (1-beta)dw
+                > V_db = beta * V_db + (1-beta)db
+                then update
+                > W = W - alpha * V_dw
+                > b = b - alpha * V_db
+                smoothes out the step of gradient descent. hyperparams are lr alpha and beta (usually 0.9)
+            </ul>
+            </p>
+
+            <hr>
+            <em>RMS prop algo</em>
+            <p>
+            <ul>
+                > lets assume w, b are orthogonal (possibly very high dim) vectors (not weight and bias)
+                > on iteration t, compute dw, db on current mini batch. note beta is some hyperparam (not related to
+                momentum)
+                > S_dw = beta * S_dw + (1-beta)* (dw ** 2) // element wise square
+                > same for S_db
+                > W = W - alpha * (dw / sqrt(S_dw))
+                > same update rule for S_db
+                > note: usually have S_dw + eps for numerical stability
+            </ul>
+
+            </p>
+            <hr>
+            <em>ADAM : RMS prop + momentum</em>
+            <p>
+            <ul>
+                > consider hyperparam search on log scale for lr. eg r = -4*np.random.rand(), then alpha = 10**r
+                > batch normalization for not just inputs, but also activations in hidden layers. use gamma and beta to
+                control mean of activations. especially useful for later layers, constrains activations from earlier
+                layers
+                > use random seach instead of grid search in hyperparam tuning. adam = rms prop + momentum in GD. coarse
+                to fine hyperparam sampling. lr most impt, beta1 for momentum, num hidden layers, then depth, mini batch
+                size
+            </ul>
+
+            </p>
+            <hr>
+            <em>TF framework</em>
+            <p>
+            <ul>
+                > w = tf.Variable(0, type=tf.float32)
+                optimizer= tf.keras.optimizers.Adam(0.1)
+                def train_step():
+                with tf.GradientTape() as tape:
+                cost = w ** 2 - 19 + 2*w
+                trianable_variables = [w]
+                grads = tape.gradient(cost, trianable_variables)
+                optimizer.apply_gradients(zip(grads, trianable_variables))
+
+            </ul>
+            <ul>
+                > glorot initializer: truncated normal distribution centered on 0, with stddev = sqrt(2 / (fan_in +
+                fan_out)), where fan_in is the number of input units and fan_out is the number of output units, both in
+                the weight tensor.
+                >
+            </ul>
+
+            </p>
+        </li>
+        <hr>
     </div>
-    
+
 
 </body>
+
 </html>
