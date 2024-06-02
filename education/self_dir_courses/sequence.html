@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improving Deep NN</title>
+</head>
+
+<body>
+    <header>
+        <a href="../self_dir.html">Back</a>
+    </header>
+    <div id="contents">
+        <h2>Notes for Sequence models</h2>
+        <li>
+            <em>GRU and RNN</em>
+            <p>
+                <ul>
+                    <p>
+                        
+                    </p>
+            </ul>
+                x<t> is the t-th token in the sequence. Tx = length of input sequence
+                    Tx(i) is input length of i-th example. Ty(i)
+                    same Wax, Waa
+                    Bidirectional RNN uses info later in the sequence
+                    a<1> = g(waa*a<0> + wax * x<1> + ba)
+                    y<1> = g(wya*a<1> + by)
+                    </ul>
+                    <ul>
+                        
+                    sometimes as Wa * [a<t-1>, x<t>]. Wa horizontally stacked, [a, x] vertically stacked. 
+                    vanishing gradient not good at capturing long term dependencies, since gradient backprop multiplies exponentially. 
+                    GRU - c: memory cell. u: update. gamma: gate. c_tilde: candidate memory cell value
+                    c_tilde<t> = tanh(wc*[c<t-1>, x<t>] + bc
+                    gamma<u> = sigma(wu * [c<t-1>, x<t>] + bu)
+                    c<t> is a<t>
+                    c<t> = gamma_u * c_tilde<t> + (1 - gamma_u) * c<t-1>
+                    // ^ element wise multiplication 
+                    gate = 0: don't update memory cell. else: update c
+                    gamma restricted between 0 and 1 - no vanishing / exploding gradient
+                    
+                    </ul>
+                    
+                    
+            </p>
+            <ul>
+                
+            </ul>
+        </li>
+        <hr>
+
+    </div>
+    <!-- use shift alt F to format document, or control shift p and search 'format document' -->
+
+</body>
+
+</html>
