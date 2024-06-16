@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conv NN</title>
+</head>
+
+<body>
+    <header>
+        <a href="../self_dir.html">Back</a>
+    </header>
+    <div id="contents">
+        <h2>Notes for course</h2>
+        <h3>Week 1</h3>
+        <li>
+            <em>Convolutions, strides, padding</em>
+            <p>Convolution is element wise multiplication, then sum of all products, of input and smaller filter.
+                Say image is (n x n), with padding p. filter or kernel is (f x f), stride is s.
+                Then output size will be [(n + 2p - f) / s] + 1, rounded down.
+                Number of image channel must be equal number of filter channels.
+                Say (n x n x n_c) conv (f x f x n_c) -> (n-f + 1) x (n-f+1). one layer only.
+                output layers from diff conv operations can be stacked; e.g. one filter for horizontal edges
+                another for vertical etc.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Fully connected, pooling, flattening</em>
+            <p>Typical CNNs (say LeNet 5) will look something like: conv1, pool1, conv2, pool2, flatten, FC3, FC4.
+                Slow decrease in activation size and increase in channels / number of filters.
+                Convolution reduces number of params due to param sharing (filter for edge useful no matter where in image) and
+                sparse connections (bottom right output doesn't depend on top left input). translational invariance.
+            </p>
+        </li>
+        <hr>
+
+        <h3>Week 1 prog assignments</h3>
+        <li>
+            <em>Convolutions, strides, padding</em>
+            <p>Convolution is element wise multiplication, then sum of all products, of input and smaller filter.
+                Say image is (n x n), with padding p. filter or kernel is (f x f), stride is s.
+                Then output size will be [(n + 2p - f) / s] + 1, rounded down.
+                Number of image channel must be equal number of filter channels.
+                Say (n x n x n_c) conv (f x f x n_c) -> (n-f + 1) x (n-f+1). one layer only.
+                output layers from diff conv operations can be stacked; e.g. one filter for horizontal edges
+                another for vertical etc.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Fully connected, pooling, flattening</em>
+            <p>Typical CNNs (say LeNet 5) will look something like: conv1, pool1, conv2, pool2, flatten, FC3, FC4.
+                Slow decrease in activation size and increase in channels / number of filters.
+                Convolution reduces number of params due to param sharing (filter for edge useful no matter where in image) and
+                sparse connections (bottom right output doesn't depend on top left input). translational invariance.
+            </p>
+        </li>
+        <hr>
+    </div>
+    <!-- use shift alt F to format document, or control shift p and search 'format document' -->
+
+</body>
+
+</html>
