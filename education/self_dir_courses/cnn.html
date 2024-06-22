@@ -38,25 +38,167 @@
 
         <h3>Week 1 prog assignments</h3>
         <li>
-            <em>Convolutions, strides, padding</em>
-            <p>Convolution is element wise multiplication, then sum of all products, of input and smaller filter.
-                Say image is (n x n), with padding p. filter or kernel is (f x f), stride is s.
-                Then output size will be [(n + 2p - f) / s] + 1, rounded down.
-                Number of image channel must be equal number of filter channels.
-                Say (n x n x n_c) conv (f x f x n_c) -> (n-f + 1) x (n-f+1). one layer only.
-                output layers from diff conv operations can be stacked; e.g. one filter for horizontal edges
-                another for vertical etc.
+            <em>sequential api in keras</em>
+            <p>build a model layer by layer. ideal when each layer has one tensor input and one output tensor. 
+                more flexible, powerful alternative is functional api. for any layer, must specify input shape in adv. 
+                Sequential example:
+                model = tf.keras.Sequential([
+                    ## ZeroPadding2D with padding 3, input shape of 64 x 64 x 3
+                    tf.keras.layers.ZeroPadding2D(padding=(3,3),input_shape=(64, 64, 3), data_format="channels_last"),
+                    
+                    ## Conv2D with 32 7x7 filters and stride of 1
+                    tf.keras.layers.Conv2D(32, (7, 7), strides = (1, 1), name = 'conv0'),
+                    ## BatchNormalization for axis 3
+                    tf.keras.layers.BatchNormalization(axis = 3, name = 'bn0'),
+                    ## ReLU
+                    tf.keras.layers.ReLU(max_value=None, negative_slope=0.0, threshold=0.0),
+                    ## Max Pooling 2D with default parameters
+                    tf.keras.layers.MaxPooling2D((2, 2), name='max_pool0'),
+                    ## Flatten layer
+                    tf.keras.layers.Flatten(),
+                    ## Dense layer with 1 unit for output & 'sigmoid' activation
+                    tf.keras.layers.Dense(1, activation='sigmoid', name='fc'),
+                
+                ])
             </p>
         </li>
         <hr>
         <li>
-            <em>Fully connected, pooling, flattening</em>
-            <p>Typical CNNs (say LeNet 5) will look something like: conv1, pool1, conv2, pool2, flatten, FC3, FC4.
-                Slow decrease in activation size and increase in channels / number of filters.
-                Convolution reduces number of params due to param sharing (filter for edge useful no matter where in image) and
-                sparse connections (bottom right output doesn't depend on top left input). translational invariance.
+            <em>functional keras api</em>
+            <p>
+                handles non-linear topology. things like skip connections. 
+                build graph of layers by creating input nodes as a callable object. eg: input_img = tf.keras.Input(shape=input_shape)
+                then call a layer on input_img:
+                tf.keras.layers.Conv2D(filters, kernel_size, ... )(input_img)
+                
             </p>
         </li>
+        <hr>
+
+        <h3>Week 2</h3>
+        <li>
+            <em>LeNet, AlexNet, VGG16 architectures</em>
+            <p>generally conv - pool multiple times. height, width decreases, number of channels increases. 
+                Then FC layers, then softmax. Can be up to couple million params. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>ResNet</em>
+            <p>
+                employs skip connections, so a[l+2] = g(W[l+2]*a[l+1] + b[l+2] + Ws * a[l]). If g is ReLU, easy 
+                for residual block to learn identity function. Resnet prevents a decline in training performance as 
+                the error gets bigger.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>one by one convolution</em>
+            <p>
+                filter will be 1 x 1 x n_C[l], then depending on number of filters, output will be n_H, n_W, n_C[l+1]
+                where n_C[l+1] is number of filters. similar to pooling, which shrinks n_H, n_W, one by one filters shrinks
+                number of channels. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>inception blocks</em>
+            <p>
+                perform convolutions of different filter size, max pool in parallel. To reduce number of operations, useful
+                1 by 1 conv to reduce depth, then conv operation on less channels. concat all the channels afterwards.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>mobile net </em>
+            <p>
+                uses depthwise, then point wise convolutions instead of conventional convolutions. 
+                Recall number of operations is size of filters * number of filter positions * number of filters.
+                So traditional could be something like 3 x 3 x 3 * 4 x 4 * 5.
+                Depth wise would use flat 3 filters of 3 by 3 first: 3 x 3 x 4 x 4 x 3, 
+                then Point wise would use 5 filters of 1 by 1 (by 3): 3 * 4 x 4 * 5 
+                v2 used residual and bottleneck layer: increased channel and convolve, pad, pool, then shrink channel
+                and add residual. EfficientNet finds ways to vary resolution, network depth, width to increase performance.
+
+            </p>
+        </li>
+        <hr>
+
+        <li>
+            <em>Other tips</em>
+            <p>
+                try transfer learning when possible. Use ensembles and average their output.
+                run classifier on multiple versions of test images and average result (multi crop at test time)
+                
+            </p>
+        </li>
+        <hr>
+        <h3>Week 3</h3>
+        <p>classification w localization</p>
+        <li>
+            <em>sliding window technique</em>
+            <p>train a convnet on tight images, then given a test image, classify different sizes of sliding windows.
+                can be implemented in conv net (and not sequentially) by changing filter size. but bounding box positions 
+                won't be accurate. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>yolo algo</em>
+            <p>
+                break into grids, apply conv net with labels (pc-presense of class, bx, by, bw, bh, c1, c2, c3).
+                the target output vol is then num grid cell x num grid cell x 8 (coz 8 elements in vector).
+                how to tell if bounding box is right? intersection over union ratio. uses anchor boxes to determine 
+                which class bounding boxes might belong to.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>semantic segmentation with U net</em>
+            <p>
+                as we go deeper, H, W goes back up to original size, number of channels decreases. 
+                tranpose convolutions used to do just that. 
+                To think about transpose convolution: output gonna be (input_h - 1) x stride + filter_height - 2p
+                U-net uses skip connections to combine low level but detailed spatial resolution from old tensors 
+                with high level contextual info from previous tensor. 
+
+            </p>
+        </li>
+        <hr>
+        <h3>Week 4</h3>
+        <p></p>
+        <li>
+            <em>face recognition and one shot learning</em>
+            <p>learn from one example to recognise the person again. need to learn a similarity function.
+                d(img1, img2): degree of difference. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>siamese network and triplet loss function</em>
+            <p>
+                siamese network encodes two pictures to get a vector representation, and compares the f(x1) and f(x2).
+                parameters of NN defines the encoding. train the NN such that 2 images of the same person leads to similar encodings, 
+                and if they are different, different encodings. 
+                use triplet loss function. anchor, positive, negative. want encoding(anchor) - encoding(positive) to be small, and d(anchor, negative)
+                or d(anchor, positive) - d(anchor, negative) + alpha margin < 0.
+                triplet loss fn is thus max(0, d(anchor, positive) - d(anchor, negative) + alpha margin) for all triplets.
+                 But need to choose triplets which are 'hard' to train from.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>semantic segmentation with U net</em>
+            <p>
+                as we go deeper, H, W goes back up to original size, number of channels decreases. 
+                tranpose convolutions used to do just that. 
+                To think about transpose convolution: output gonna be (input_h - 1) x stride + filter_height - 2p
+                U-net uses skip connections to combine low level but detailed spatial resolution from old tensors 
+                with high level contextual info from previous tensor. 
+
+            </p>
+        </li>
+        <hr>
         <hr>
     </div>
     <!-- use shift alt F to format document, or control shift p and search 'format document' -->
