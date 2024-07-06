@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,38 +16,64 @@
         <li>
             <em>GRU and RNN</em>
             <p>
-                <ul>
-                    <p>
-                        
-                    </p>
-            </ul>
-                x<t> is the t-th token in the sequence. Tx = length of input sequence
-                    Tx(i) is input length of i-th example. Ty(i)
-                    same Wax, Waa
-                    Bidirectional RNN uses info later in the sequence
-                    a<1> = g(waa*a<0> + wax * x<1> + ba)
-                    y<1> = g(wya*a<1> + by)
-                    </ul>
-                    <ul>
-                        
-                    sometimes as Wa * [a<t-1>, x<t>]. Wa horizontally stacked, [a, x] vertically stacked. 
-                    vanishing gradient not good at capturing long term dependencies, since gradient backprop multiplies exponentially. 
-                    GRU - c: memory cell. u: update. gamma: gate. c_tilde: candidate memory cell value
-                    c_tilde<t> = tanh(wc*[c<t-1>, x<t>] + bc
-                    gamma<u> = sigma(wu * [c<t-1>, x<t>] + bu)
-                    c<t> is a<t>
-                    c<t> = gamma_u * c_tilde<t> + (1 - gamma_u) * c<t-1>
-                    // ^ element wise multiplication 
-                    gate = 0: don't update memory cell. else: update c
-                    gamma restricted between 0 and 1 - no vanishing / exploding gradient
-                    
-                    </ul>
-                    
-                    
-            </p>
             <ul>
-                
+                <p>
+
+                </p>
             </ul>
+            x<t> is the t-th token in the sequence. Tx = length of input sequence
+                Tx(i) is input length of i-th example. Ty(i)
+                same Wax, Waa
+                Bidirectional RNN uses info later in the sequence
+                a<1> = g(waa*a<0> + wax * x<1> + ba)
+                            y<1> = g(wya*a<1> + by)
+                                    </ul>
+                                    <ul>
+
+                                        sometimes as Wa * [a<t-1>, x<t>]. Wa horizontally stacked, [a, x] vertically
+                                                stacked.
+                                                vanishing gradient not good at capturing long term dependencies, since
+                                                gradient backprop multiplies exponentially.
+                                                GRU - c: memory cell. u: update. gamma: gate. c_tilde: candidate memory
+                                                cell value
+                                                c_tilde<t> = tanh(wc*[c<t-1>, x<t>] + bc
+                                                            gamma<u> = sigma(wu * [c<t-1>, x<t>] + bu)
+                                                                        c<t> is a<t>
+                                                                                c<t> = gamma_u * c_tilde<t> + (1 -
+                                                                                        gamma_u) * c<t-1>
+                                                                                            // ^ element wise
+                                                                                            multiplication
+                                                                                            gate = 0: don't update
+                                                                                            memory cell. else: update c
+                                                                                            gamma restricted between 0
+                                                                                            and 1 - no vanishing /
+                                                                                            exploding gradient
+
+                                    </ul>
+
+
+                                    </p>
+                                    <hr>
+                                    <ul>
+                                        <em>word embeddings</em>
+                                        <p>Instead of one hot encoding, feature vector embeddings capture
+                                            word meanings, can be used to determine how related words are.
+                                            t-SNE then used to reduce vector dimensions.
+                                        </p>
+                                    </ul>
+
+                                    <hr>
+                                    <ul>
+                                        <em>learning word embeddings</em>
+                                        <p>
+                                            We get word embeddings by multiplying the one hot vector of the word (
+                                                of size length of vocab) by the embedding matrix E. Some ways to make E is word2vec,
+                                                another is negative sampling. in Negative sampling, we select context (eg, orange), then
+                                                another word (one from data, say juice, and k others randomly from vocab). assign the pair from 
+                                                date to be target of 1, the rest 0. Then train a logreg model: P(1 | context, word) = sigma(theta.T * e_c), where e_c
+                                                is context embedding. 
+                                        </p>
+                                    </ul>
         </li>
         <hr>
 

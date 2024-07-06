@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering optimization</title>
+</head>
+
+<body>
+    <header>
+        <a href="../self_dir.html">Back</a>
+    </header>
+    <div id="contents">
+
+        <h2>Notes for April</h2>
+        <h3> 
+            Review Questions for Derivatives, Gradients and Bracketing
+        </h3>
+        <ol>
+            <li>What are the types of step estimation for finite differentiation, and their errors?</li>
+            <li>How is complex step method preferable to finite differentiation?</li>
+            <li>What's automatic differentiation, and how does dual numbers help?</li>
+            <li>Under what assumptions does high-low-high evaluation result in a valid bracket?</li>
+            <li>Walk thru Fibonacci sectioning. Recall typically [1, 1, 2, 3, 5, 8, 13]. Recall x1 = a + F[n-2]/F[n] (b-a), 
+                x2 = F[n-1]/F[n] (b-a). Index of F[n] - 2 is the number of iterations. 
+            </li>
+            <li>How does quadratic fit search work?</li>
+            <li>High level explaination of Shubert Piyavskii method?</li>
+            <li>Explain bi-section method?</li>
+        </ol>
+        <li>
+            <em>Finite differentiation, complex step method</em>
+            <p>finite step uses definition of Taylor's series to find f'(x). get estimation plus error.
+                For Forward / Backward step estimation, error is O(h), for central differencing, error is O(h^2), 
+                but susceptible to numerical cancellation error if h << x. 
+                Complex step method avoids this: f(x + ih) = f(x) + ihf'(x) - f"(x)h^2 / 2! - ih^3 f'''(x)/3!.
+                Then take Im terms to get f'(x), and Real terms to get f(x). Notice both have O(h^2) error and 
+                avoids numerical cancellation error.
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Automatic Differentiation, Dual Numbers</em>
+            <p>Unlike finite differentiation, automatic differentiation computes derivatives efficiently. 
+                Can be done in forward or backward accumulation. Consider f(a, b) = ln(ab + max(a, 2)). Draw computation graph, 
+                label intermediate variables and get derivative of each var. Use dual numbers: define epsilon st epsilon^2 = 0.
+                Dual numbers allow you to compute exact derivatives with no error, unlike complex numbers. f(a + e) = f(a) + f'(a)e.
+
+
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Bracketing</em>
+            <p>
+                Assuming unimodal (there is unique x* such that f is monotonically decreasing before it, and monotonically increasing after)
+                . If there's a bracket f(a) > f(b) < f(c), then we know minimum must be between (a, c).
+                After finding a valid bracket, use Fibonacci or golden section search to maximally shrink bracketed interval. 
+                
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Quadratic fit, Shubert Piyavskii method</em>
+            <p>
+                Assuming unimodal, given samples (a, b, c), fit quadratic curve to them. Get minimum of curve analytically. If 
+                analytical min is to right of b, remove a, fit new curve to (b, min, c). Continue. Else if min is to left of b, fit (a, min, b).
+                No unimodal required: Shubert Piyavskii method: | f(x) - f(y) | <= Lipschitz constant * |x-y|. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Bi-section method</em>
+            <p>
+                Used in root finding method (ie, solves f(x)=0). first derivative of minima has to be 0. 
+                Need to double check that solution is indeed a minimum. Basically split halfway, check if > or < than 0.
+                Note that all the methods above are 1D. 
+            </p>
+        </li>
+        <hr>
+        <hr>
+
+        <h3> 
+            Review Questions for Local Descent, 1st and 2nd order methods
+        </h3>
+        <ol>
+            <li>Describe general descent iteration procedure?</li>
+            <li>What is approximate line search?</li>
+            <li>How do trust region methods prevent unstable fluctuations?</li>
+            <li>Gradient descent with exact line search leads to orthogonal steps? </li>
+        </ol>
+        <li>
+            <em>Line search</em>
+            <p>Let's say we found d, the direction vector. Find the best step size alpha?
+                This is a 1D optimization problem, can find best alpha using previously discussed methods (bracketing). But 
+                not always required to find absolute best alpha. Say we can accept alpha as long as it causes a sufficient decrease in objective function.
+                So try to take one step of alpha along d. If the evaluation of that point is larger than previous evaluation, cut alpha 
+                in half. We can change what evaluations are deemed acceptable according to beta. So accept if f(x^(k+1)) <= f(x^k) + beta * alpha * del_d(f(x^k)), where
+                beta is between 0 and 1. This is called backtracking line search. There are other possible conditions (Wolfe conditions) 
+            </p>
+        </li>
+        <hr>
+
+        <li>
+            <em>Trust Region methods</em>
+            <p>
+                Define some circle/sphere of trust, solve argmin f(x') subject to ||x - x'|| < trust radius epsilon. 
+                Of course, have some termination condition. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Trust Region methods</em>
+            <p>
+                Define some circle/sphere of trust, solve argmin f(x') subject to ||x - x'|| < trust radius epsilon. 
+                Of course, have some termination condition. 
+            </p>
+        </li>
+        <hr>
+    </div>
+    <!-- use shift alt F to format document, or control shift p and search 'format document' -->
+
+</body>
+
+</html>
