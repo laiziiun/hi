@@ -89,6 +89,7 @@
             <li>What is approximate line search?</li>
             <li>How do trust region methods prevent unstable fluctuations?</li>
             <li>Gradient descent with exact line search leads to orthogonal steps? </li>
+            <li>What is conjugate gradient descent and momentum?</li>
         </ol>
         <li>
             <em>Line search</em>
@@ -111,13 +112,27 @@
         </li>
         <hr>
         <li>
-            <em>Trust Region methods</em>
+            <em>Conjugate gradient descent / momentum</em>
             <p>
-                Define some circle/sphere of trust, solve argmin f(x') subject to ||x - x'|| < trust radius epsilon. 
-                Of course, have some termination condition. 
+                Assumes problem is quadratic (ie, f(x) = 0.5 * x.T * A * x + b.T * x + c, where A is positive semi definite). 
+                So all search directions are mutually conjugate wrt A, ie xi * A * xj = 0 for all different i, j. 
+                For conjugate gradient descent: d^(k+1) = beta^k * d^k - g^(k+1), where g^(k+1) is the gradient calculation for this step.
+                We use Fletcher-Reeves or Polak-Ribiere equations to find beta^k.
+                Similar to gradient descent with momentum: track velocity v^(k+1) = beta * v^k - alpha * g^k
+                Then take step x^(k+1) = x^k + v^(k+1).
+
             </p>
         </li>
         <hr>
+        <li>
+            <em></em>
+            <p>
+                
+
+            </p>
+        </li>
+        <hr>
+    <!-- next lecture 4_11 -->
     </div>
     <!-- use shift alt F to format document, or control shift p and search 'format document' -->
 
