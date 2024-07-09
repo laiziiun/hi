@@ -90,6 +90,9 @@
             <li>How do trust region methods prevent unstable fluctuations?</li>
             <li>Gradient descent with exact line search leads to orthogonal steps? </li>
             <li>What is conjugate gradient descent and momentum?</li>
+            <li>What is hyperparameter gradient descent?</li>
+            <li>What is Newtons method for root finding (f(x) = 0), and how can it be applied to minima finding?</li>
+            <li>What's secant method, and how does it differ from newton's method?</li>
         </ol>
         <li>
             <em>Line search</em>
@@ -125,10 +128,55 @@
         </li>
         <hr>
         <li>
-            <em></em>
+            <em>Hypergradient descent</em>
             <p>
+                Use gradient descent to tune hyperparams like alpha. alpha^(k+1) = alpha^k + mu * gradient^k * gradient^(k+1). 
+                Consider when next step gradient is othorgonal to prev step (alpha remains same), if next step gradient is in same direction or in opposite
+                 direction to previous gradient. 
                 
 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Second order methods</em>
+            <p>
+                Use the Hessian - instead of using three points in quadratic fit, why not use second derivative of one point to make a curve. 
+                Then take min point of curve. But imagine if passed inflection point - newton's method points towards local maxima instead. 
+                What if can't get second derivative? Use secant method to estimate. 
+                
+                Recall formula for Newton's for root finding: x <- x - f(x) / f'(x). If derivative is hard to find, approximate with finite step. This 
+                is secant method. 
+            </p>
+        </li>
+        <hr>
+        <li>
+            <em>Quasi newton method</em>
+            <p>
+                Approximate the inverse Hessian in multivariate cases. DFP, BFGS methods. In general: x <- x - alpha*Q*g. Different methods 
+                have different formulas for Q. 
+            </p>
+        </li>
+        <hr>
+        <h3> 
+            Review Questions for Direct methods
+        </h3>
+        <ol>
+            <li>What's cyclic coordinate search? With acceleration?</li>
+            <li>What is approximate line search?</li>
+            <li>How do trust region methods prevent unstable fluctuations?</li>
+            <li>Gradient descent with exact line search leads to orthogonal steps? </li>
+            <li>What is conjugate gradient descent and momentum?</li>
+            <li>What is hyperparameter gradient descent?</li>
+            <li>What is Newtons method for root finding (f(x) = 0), and how can it be applied to minima finding?</li>
+            <li>What's secant method, and how does it differ from newton's method?</li>
+        </ol>
+        <li>
+            <em>Direct methods</em>
+            <p>
+                Pattern search: cyclic coordinate search. Find x1* that minimizes f(x1, x2, ..., xd), then find 
+                x2* that minimizes f(x1*, x2, ...), and so on. Go back to x1 and find the argmin again. With acceleration: 
+                takes vectors of previous steps, try to argmin in that direction instead. If we forget the oldest 
             </p>
         </li>
         <hr>
